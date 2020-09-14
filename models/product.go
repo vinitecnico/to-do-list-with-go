@@ -3,7 +3,7 @@ package models
 import "toDoListGo/db"
 
 type Product struct {
-	productID   int
+	Id          int
 	Name        string
 	Description string
 	Price       float64
@@ -19,14 +19,14 @@ func GetAll() []Product {
 	products := []Product{}
 
 	for rows.Next() {
-		var productID, quantity int
+		var Id, quantity int
 		var name, description string
 		var price float64
-		err = rows.Scan(&productID, &name, &description, &price, &quantity)
+		err = rows.Scan(&Id, &name, &description, &price, &quantity)
 		if err != nil {
 			panic(err.Error())
 		}
-		product := Product{productID, name, description, price, quantity}
+		product := Product{Id, name, description, price, quantity}
 		products = append(products, product)
 	}
 
@@ -42,5 +42,16 @@ func NewProduct(name string, description string, price float64, quantity int) {
 	}
 
 	insertdata.Exec(name, description, price, quantity)
+	defer db.Close()
+}
+
+func Delete(id string) {
+	db := db.ConectDB()
+	deletedata, err := db.Prepare("DELETE FROM products WHERE Id=$1")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deletedata.Exec(id)
 	defer db.Close()
 }

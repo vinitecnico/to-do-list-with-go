@@ -23,7 +23,7 @@ password: "admin"
 CREATE DATABASE dev
 CREATE TABLE products
 (
-    id  SERIAL,
+    id  SERIAL primary key,
     name character varying(50) COLLATE pg_catalog."default",
     description character varying(50) COLLATE pg_catalog."default",
     price numeric,
