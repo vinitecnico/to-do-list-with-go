@@ -21,6 +21,9 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+    
+    - name: get reference
+      run: go get github.com/lib/pq
 
     - name: Get dependencies
       run: |
@@ -28,10 +31,7 @@ jobs:
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
-        fi
-
-    - name: get db
-      run: go get github.com/lib/pq
+        fi   
 
     - name: Build
       run: go build -v .
