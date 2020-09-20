@@ -24,12 +24,14 @@ jobs:
 
     - name: Get dependencies
       run: |
-        go get -v -t -d ./...
-        go get github.com/lib/pq
+        go get -v -t -d ./...        
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+
+    - name: get db
+      run: go get github.com/lib/pq
 
     - name: Build
       run: go build -v .
